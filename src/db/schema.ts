@@ -1,5 +1,5 @@
-import { integer, pgTable, serial, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgTable, serial, timestamp } from 'drizzle-orm/pg-core'
 
-export const bids = pgTable("bb_bids", {
-  id: serial("id").primaryKey(),
-});
+export const bids = pgTable('bb_bids', {
+  id: serial('id').primaryKey(),
+})

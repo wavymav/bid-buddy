@@ -3,25 +3,35 @@ import Image from 'next/image'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { SignIn } from '@/components/sign-in'
+import { SignOut } from '@/components/signout'
+import { auth } from '@/auth'
 import { database } from '@/db/database'
-import { bids as bidsSchema } from '@/db/schema'
+import { items } from '@/db/schema'
 
 export default async function Home() {
-  const bids = await database.query.bids.findMany()
+  const session = await auth()
+  const allItems = await database.query.items.findMany()
+
   return (
     <main className=' container mx-auto py-12'>
+      {session ? <SignOut /> : <SignIn />}
+      {session?.user?.name}
       <form
         action={async (formData: FormData) => {
           'use server'
-          await database.insert(bidsSchema).values({})
+          await database.insert(items).values({
+            name: formData.get('name') as string,
+            userId: session?.user?.id!,
+          })
           revalidatePath('/')
         }}
       >
-        <Input type='bid' placeholder='Bid' />
-        <Button type='submit'>Place Bid</Button>
+        <Input name='name' placeholder='Name your item' />
+        <Button type='submit'>Post Item</Button>
       </form>
-      {bids.map((bid) => (
-        <div key={bid.id}>{bid.id}</div>
+      {allItems.map((item) => (
+        <div key={item.id}>{item.name}</div>
       ))}
     </main>
   )

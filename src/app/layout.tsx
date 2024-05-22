@@ -34,7 +34,7 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Header />
-          {children}
+          <div className='container mx-auto py-12'>{children}</div>
         </SessionProvider>
       </body>
     </html>

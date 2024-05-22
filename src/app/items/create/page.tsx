@@ -11,7 +11,7 @@ import { createItemAction, createUploadUrlAction } from './actions'
 export default function Create() {
   const [date, setDate] = useState<Date | undefined>()
   return (
-    <main className=' container mx-auto space-y-8 py-12'>
+    <main className='space-y-8'>
       <h1 className='text-4xl font-bold'>Post an Item</h1>
       <form
         className='flex max-w-lg flex-col gap-4 space-y-4 rounded-xl border p-4'

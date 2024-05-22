@@ -8,6 +8,7 @@ import { SessionProvider } from 'next-auth/react'
 import { cn } from '@/lib/utils'
 
 import { Header } from './header'
+import { AppKnockProviders } from './knock-provider'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -33,8 +34,10 @@ export default function RootLayout({
         )}
       >
         <SessionProvider>
-          <Header />
-          <div className='container mx-auto py-12'>{children}</div>
+          <AppKnockProviders>
+            <Header />
+            <div className='container mx-auto py-12'>{children}</div>
+          </AppKnockProviders>
         </SessionProvider>
       </body>
     </html>

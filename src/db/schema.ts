@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm'
 import {
   integer,
   pgTable,
@@ -62,10 +63,6 @@ export const verificationTokens = pgTable(
   })
 )
 
-export const bids = pgTable('bb_bids', {
-  id: serial('id').primaryKey(),
-})
-
 export const items = pgTable('bb_item', {
   id: serial('id').primaryKey(),
   userId: text('userId')
@@ -78,5 +75,24 @@ export const items = pgTable('bb_item', {
   bidInterval: integer('bidInterval').notNull().default(100),
   endDate: timestamp('endDate', { mode: 'date' }).notNull(),
 })
+
+export const bids = pgTable('bb_bids', {
+  id: serial('id').primaryKey(),
+  amount: integer('amount').notNull(),
+  itemId: serial('itemId')
+    .notNull()
+    .references(() => items.id, { onDelete: 'cascade' }),
+  userId: text('userId')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  timestamp: timestamp('timestamp', { mode: 'date' }).notNull(),
+})
+
+export const usersRelations = relations(bids, ({ one }) => ({
+  user: one(users, {
+    fields: [bids.userId],
+    references: [users.id],
+  }),
+}))
 
 export type Item = typeof items.$inferSelect
